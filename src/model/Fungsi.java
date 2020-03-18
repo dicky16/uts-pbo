@@ -33,7 +33,6 @@ public class Fungsi {
         column.setPreferredWidth(190);
         return tblPembelian;
     }
-     
      public String setIDR(double var) {
         //rupiah format
         String idr;

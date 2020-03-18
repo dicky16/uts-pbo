@@ -145,7 +145,6 @@ public class Home extends javax.swing.JFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
 
-        Image image = null;
         WisataData wisata = new WisataData();
         int size = wisata.getArraySize();
         try {
@@ -155,7 +154,6 @@ public class Home extends javax.swing.JFrame {
             tabel.setRowHeight(150);
             for (int i = 0; i < size; i++) {
                 URL url = new URL(wisata.getUrlImage().get(i));
-//                image = ImageIO.read(url);
 
                 ImageIcon imggg = new ImageIcon(new ImageIcon(url).getImage()
                         .getScaledInstance(150, 150, Image.SCALE_SMOOTH));

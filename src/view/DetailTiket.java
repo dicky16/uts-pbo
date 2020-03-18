@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+//import class fungsi dan WisataData
 import model.Fungsi;
 import model.WisataData;
 
@@ -209,6 +210,10 @@ public class DetailTiket extends javax.swing.JFrame {
                         + "Total : " + total + "\n"
                         + "Tanggal Pembelian : " + tgl);
                 wisataData.setDataArray(nama, noTelp, jumlahTiket, total, tgl);
+                
+                edt_nama_pembeli.setText("");
+                edt_nomor_pembeli.setText("");
+                edt_jumlah.setText("");
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Masukkan Nomor Telepon berisi angka");
             }

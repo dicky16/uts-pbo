@@ -13,7 +13,6 @@ import static model.ArrayDataPembeli.ArrNomorPembeli;
 import static model.ArrayDataPembeli.ArrTanggal;
 import static model.ArrayDataPembeli.ArrTotalHarga;
 import model.Fungsi;
-import model.WisataData;
 
 /**
  *
