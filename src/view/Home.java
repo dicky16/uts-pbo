@@ -3,22 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui;
+package view;
 
 import java.awt.Component;
 import java.awt.Image;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import model.WisataData;
+
 
 /**
  *
@@ -58,8 +56,11 @@ public class Home extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabel = new javax.swing.JTable();
         btn_beli = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menu_pembeli = new javax.swing.JMenu();
+        menu_exit = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -73,7 +74,15 @@ public class Home extends javax.swing.JFrame {
             new String [] {
                 "Wisata", "Nama Wisata", "Deskripsi", "Harga"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabel);
 
         btn_beli.setBackground(new java.awt.Color(51, 153, 255));
@@ -86,38 +95,59 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        menu_pembeli.setText("Data Pembeli");
+        menu_pembeli.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menu_pembeliMousePressed(evt);
+            }
+        });
+        jMenuBar1.add(menu_pembeli);
+
+        menu_exit.setText("Exit");
+        menu_exit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menu_exitMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                menu_exitMouseReleased(evt);
+            }
+        });
+        jMenuBar1.add(menu_exit);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 776, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_beli, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(6, 6, 6)
+                .addComponent(btn_beli, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(171, 171, 171)
+                .addGap(212, 212, 212)
                 .addComponent(btn_beli, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+
         Image image = null;
         WisataData wisata = new WisataData();
         int size = wisata.getArraySize();
-
-        //add data desc
         try {
 
             tabel.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());
@@ -125,14 +155,14 @@ public class Home extends javax.swing.JFrame {
             tabel.setRowHeight(150);
             for (int i = 0; i < size; i++) {
                 URL url = new URL(wisata.getUrlImage().get(i));
-                image = ImageIO.read(url);
+//                image = ImageIO.read(url);
 
                 ImageIcon imggg = new ImageIcon(new ImageIcon(url).getImage()
                         .getScaledInstance(150, 150, Image.SCALE_SMOOTH));
 
                 tbl.addRow(new Object[]{imggg, wisata.getNamaWisata().get(i), wisata.getDescWisata().get(i), wisata.getHarga().get(i)});
             }
-            
+
             tabel.setModel(tbl);
 
         } catch (IOException e) {
@@ -144,11 +174,36 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentShown
 
     private void btn_beliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_beliActionPerformed
-        DetailTiket detail = new DetailTiket();
-        detail.setVisible(true);
-        
-        
+
+        if (tabel.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(rootPane, "Silahkan pilih dulu");
+        } else {
+            WisataData wisata = new WisataData();
+            int index = tabel.getSelectedRow();
+            String namaWisata = wisata.getNamaWisata().get(index);
+            String image = wisata.getUrlImage().get(index);
+            String hrg = wisata.getHarga().get(index);
+
+            DetailTiket detail = new DetailTiket(namaWisata, hrg, image);
+            detail.setVisible(true);
+
+        }
+
+
     }//GEN-LAST:event_btn_beliActionPerformed
+
+    private void menu_pembeliMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_pembeliMousePressed
+       DataPembeli dataPembeli = new DataPembeli();
+       dataPembeli.setVisible(true);
+    }//GEN-LAST:event_menu_pembeliMousePressed
+
+    private void menu_exitMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_exitMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menu_exitMouseReleased
+
+    private void menu_exitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_exitMousePressed
+        System.exit(0);
+    }//GEN-LAST:event_menu_exitMousePressed
 
     /**
      * @param args the command line arguments
@@ -189,7 +244,10 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_beli;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenu menu_exit;
+    private javax.swing.JMenu menu_pembeli;
     private javax.swing.JTable tabel;
     // End of variables declaration//GEN-END:variables
 }

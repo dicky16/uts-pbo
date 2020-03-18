@@ -6,18 +6,42 @@
 package model;
 
 import java.util.ArrayList;
+import static model.ArrayDataPembeli.ArrJumlahTiket;
+import static model.ArrayDataPembeli.ArrNamaPembeli;
+import static model.ArrayDataPembeli.ArrNomorPembeli;
+import static model.ArrayDataPembeli.ArrTanggal;
+import static model.ArrayDataPembeli.ArrTotalHarga;
 
 /**
  *
  * @author djavu
  */
 public class WisataData {
+    
+    
+    
+    //data
+    private ArrayList<String> namaWisata = new ArrayList<>();
+    private ArrayList<String> descWisata = new ArrayList<>();
+    private ArrayList<String> urlImage = new ArrayList<>();
+    private ArrayList<String> harga = new ArrayList<>();
 
-    ArrayList<String> namaWisata = new ArrayList<>();
-    ArrayList<String> descWisata = new ArrayList<>();
-    ArrayList<String> urlImage = new ArrayList<>();
-    ArrayList<String> harga = new ArrayList<>();
-
+    private double jumlahTiket;
+    private double hargaTiket;
+    //for data pembeli
+    public void setDataArray(String nama,String nomor,String jumlah,String total,String tanggal){
+        ArrNamaPembeli.add(nama);
+        ArrNomorPembeli.add(nomor);
+        ArrJumlahTiket.add(jumlah);
+        ArrTotalHarga.add(total);
+        ArrTanggal.add(tanggal);
+    }
+    //for total
+    public WisataData(double jumlahTiket,double harga){
+        this.jumlahTiket = jumlahTiket;
+        this.hargaTiket = harga;
+    }
+    //data wisata
     public WisataData() {
         //add data nama wisata
         namaWisata.add("Jatim Park 1");
@@ -66,6 +90,20 @@ public class WisataData {
 
     public ArrayList<String> getUrlImage() {
         return urlImage;
+    }
+    
+    //function for tiket
+//    public void setJumlahTiket(double jumlahTiket) {
+//        this.jumlahTiket = jumlahTiket;
+//    }
+//
+//    public void setHarga(double harga) {
+//        this.hargaTiket = harga;
+//    }
+    
+    public double getTotalHarga(){
+        double totalHarga = jumlahTiket*hargaTiket;
+        return totalHarga;
     }
 
 }
