@@ -118,8 +118,6 @@ public class DataPembeli extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentShown
 
     private void menu_homeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_homeMousePressed
-        Home home = new Home();
-        home.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_menu_homeMousePressed
 
